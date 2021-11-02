@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => CounterProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: [
           Locale('en', ''), // English, no country code
-          Locale('vn', ''), // Spanish, no country code
+          Locale('vn', ''),
+          Locale('ja', ''),// Spanish, no country code
         ],
         home: MyHomePage(),
       ),
@@ -43,6 +45,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool click = false;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CounterProvider>(
@@ -55,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 Text(
                   S.of(context).helloWorld,
                 ),
@@ -63,6 +67,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   countPro.count.toString(),
                   style: Theme.of(context).textTheme.headline4,
                 ),
+                ElevatedButton(
+                  onPressed: (){
+                    setState(() {
+                      //C1: làm gọn
+                      click = !click;
+                      S.load(Locale(click ? 'vn' : 'en'));
+
+                      //C2: Truyền thống
+                      // if(!click){
+                      //   S.load(Locale('vn'));
+                      //   click = true;
+                      // }else{
+                      //   S.load(Locale('en'));
+                      //   click = false;
+                      // }
+                    });
+                  },
+                  child: Text('Change Language'),
+                )
               ],
             ),
           ),
